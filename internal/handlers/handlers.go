@@ -11,8 +11,12 @@ import (
 )
 
 func HandleHTML(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	http.ServeFile(w, r, "../index.html")
+	data, err := os.ReadFile("/index.html")
+	if err != nil {
+		http.Error(w, "index.html not found", http.StatusNotFound)
+	}
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.Write(data)
 }
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10 << 20)
@@ -42,6 +46,6 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to read file", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	w.Write([]byte(convertedStr))
 }
