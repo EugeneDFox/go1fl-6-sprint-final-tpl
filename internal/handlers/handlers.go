@@ -11,11 +11,13 @@ import (
 )
 
 func HandleHTML(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile("/index.html")
+	data, err := os.ReadFile("./index.html")
 	if err != nil {
 		http.Error(w, "index.html not found", http.StatusNotFound)
+		return
 	}
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
@@ -47,5 +49,6 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(convertedStr))
 }
